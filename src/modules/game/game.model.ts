@@ -10,35 +10,33 @@ export interface IGame extends Document {
   rating: number;
   releaseDate: string;
   platform: string[];
-  status: 'Live' | 'Coming Soon' | 'Delisted';
+  status: string;
   price: number;
   size: string;
   fileName: string;
   originalName: string;
   filePath: string;
   owner: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 const gameSchema = new Schema<IGame>({
-  title:        { type: String, required: true },
-  slug:         { type: String, required: true, unique: true },
-  thumbnail:    { type: String, required: true },
-  description:  { type: String },
-  genre:        [{ type: String, index: true }],
-  rating:       { type: Number, default: 0, min: 0, max: 5 },
-  releaseDate:  { type: String },
-  platform:     [{ type: String }],
-  status:       { type: String, enum: ['Live', 'Coming Soon', 'Delisted'], default: 'Live' },
-  price:        { type: Number, default: 0 },
-  size:         { type: String },
-  fileName:     { type: String, required: true },
-  originalName: { type: String, required: true },
-  filePath:     { type: String, required: true },
-  owner:        { type: String, required: true },
+  title: String,
+  slug: String,
+  thumbnail: String,
+  description: String,
+  genre: [String],
+  rating: { type: Number, default: 0 },
+  releaseDate: String,
+  platform: [String],
+  status: { type: String, default: 'Live' },
+  price: { type: Number, default: 0 },
+  size: String,
+  fileName: String,
+  originalName: String,
+  filePath: String,
+  owner: String,
 }, { timestamps: true });
 
-gameSchema.index({ title: 'text', description: 'text' });
+const Game = mongoose.model<IGame>('Game', gameSchema);
 
-export default mongoose.model<IGame>('Game', gameSchema);
+export default Game;

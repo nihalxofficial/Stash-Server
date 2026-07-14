@@ -1,23 +1,36 @@
-// src/modules/game/game.service.ts
-import fs from 'fs';
 import * as gameRepo from './game.repository';
-import { IGame } from './game.model';
 
-export const createGame = (data: Partial<IGame>) => gameRepo.create(data);
-
-export const findGames = (query?: string, genre?: string, platform?: string) =>
-  gameRepo.search(query, genre, platform);
-
-export const getGameFile = async (id: string) => {
-  const game = await gameRepo.findById(id);
-  if (!game) throw new Error('Game not found');
-  if (!fs.existsSync(game.filePath)) throw new Error('File missing on server');
-  return game;
+export const createGame = (data: any) => {
+  return gameRepo.create(data);
 };
 
-export const deleteGame = async (id: string) => {
-  const game = await gameRepo.findById(id);
-  if (!game) throw new Error('Game not found');
-  if (fs.existsSync(game.filePath)) fs.unlinkSync(game.filePath);
+export const searchGames = (reqQuery: any) => {
+  const query: any = {};
+
+  if (reqQuery.q) {
+    query.title = { $regex: reqQuery.q, $options: 'i' };
+  }
+  if (reqQuery.genre) {
+    query.genre = reqQuery.genre;
+  }
+  if (reqQuery.platform) {
+    query.platform = reqQuery.platform;
+  }
+  if (reqQuery.status) {
+    query.status = reqQuery.status;
+  }
+
+  return gameRepo.findAll(query);
+};
+
+export const getGameById = (id: string) => {
+  return gameRepo.findById(id);
+};
+
+export const updateGame = (id: string, data: any) => {
+  return gameRepo.updateById(id, data);
+};
+
+export const deleteGame = (id: string) => {
   return gameRepo.deleteById(id);
 };

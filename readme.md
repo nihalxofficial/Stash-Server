@@ -7,4 +7,4 @@
 - Dotenv
 - Cors
 - Multer 
-- Json Web token (jwks-rsa)
+- Jose-cjs

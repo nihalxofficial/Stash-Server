@@ -5,10 +5,10 @@ import * as ctrl from './game.controller';
 
 const router = Router();
 
-router.get('/search', ctrl.search);
+router.get('/', ctrl.search);
 router.get('/:id', ctrl.getOne);
 router.get('/:id/download', ctrl.download);
-router.post('/', requireAuth, upload.single('file'), ctrl.create);
+router.post('/', upload.single('file'), ctrl.create);
 router.patch('/:id', requireAuth, ctrl.update);
 router.delete('/:id', requireAuth, ctrl.remove);
 

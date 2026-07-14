@@ -1,5 +1,4 @@
-// src/modules/game/game.model.ts
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Types } from 'mongoose';
 
 export interface IGame extends Document {
   title: string;
@@ -16,7 +15,7 @@ export interface IGame extends Document {
   fileName: string;
   originalName: string;
   filePath: string;
-  owner: string;
+  owner: Types.ObjectId;
 }
 
 const gameSchema = new Schema<IGame>({
@@ -34,7 +33,7 @@ const gameSchema = new Schema<IGame>({
   fileName: String,
   originalName: String,
   filePath: String,
-  owner: String,
+  owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 }, { timestamps: true });
 
 const Game = mongoose.model<IGame>('Game', gameSchema);

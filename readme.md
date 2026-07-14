@@ -7,5 +7,5 @@
 - Dotenv
 - Cors
 - Multer 
-- Supabase
+- Cloudinary
 - Jose-cjs

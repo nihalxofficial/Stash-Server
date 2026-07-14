@@ -16,6 +16,7 @@ export const create = async (req: Request, res: Response) => {
     ...data,
     genre: Array.isArray(data.genre) ? data.genre : [data.genre],
     platform: Array.isArray(data.platform) ? data.platform : [data.platform],
+    images: Array.isArray(data.images) ? data.images : (data.images ? [data.images] : []),
     fileName: key,
     originalName: file.originalname,
     filePath: fileUrl,

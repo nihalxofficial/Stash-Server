@@ -4,6 +4,7 @@ export interface IGame extends Document {
   title: string;
   slug: string;
   thumbnail: string;
+  images: string[];
   description?: string;
   genre: string[];
   rating: number;
@@ -22,6 +23,7 @@ const gameSchema = new Schema<IGame>({
   title: String,
   slug: String,
   thumbnail: String,
+  images: [String],
   description: String,
   genre: [String],
   rating: { type: Number, default: 0 },

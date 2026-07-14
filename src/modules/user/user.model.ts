@@ -21,6 +21,5 @@ const userSchema = new Schema<IUser>({
   role: String,
   status: String,
   plan: String
-}, { timestamps: true, collection: 'user' }); // matches better-auth's collection name
-
+}, { timestamps: true, collection: 'user' });
 export default mongoose.model<IUser>('User', userSchema);

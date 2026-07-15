@@ -16,6 +16,6 @@ export const countAll = (query: any) => {
   return Game.countDocuments(query);
 };
 
-export const findById = (id: string) => Game.findById(id).populate('owner', 'name email');
+export const findById = (id: string) => Game.findById(id).populate('owner', 'name email image');
 export const updateById = (id: string, data: any) => Game.updateOne({ _id: id }, { $set: data });
 export const deleteById = (id: string) => Game.deleteOne({ _id: id });

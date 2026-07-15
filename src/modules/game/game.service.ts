@@ -15,13 +15,16 @@ export const searchGames = async (reqQuery: any) => {
     
     query.$or = [
       { title: searchRegex },
-      { genre: searchRegex },    // MongoDB automatically checks all elements in the array
-      { platform: searchRegex } // MongoDB automatically checks all elements in the array
+      { genre: searchRegex },    
+      { platform: searchRegex }
     ];
   }
 
   // 2. Strict Category Filtering (Dropdown Selections)
   // Keeps separate strict dropdown filters active alongside the text query input
+  if (reqQuery.owner) {
+    query.owner = reqQuery.owner;
+  }
   if (reqQuery.genre) {
     query.genre = reqQuery.genre;
   }
@@ -44,7 +47,7 @@ export const searchGames = async (reqQuery: any) => {
 
   // 4. Pagination Math Execution
   const page = Math.max(1, parseInt(reqQuery.page) || 1);
-  const limit = Math.max(1, parseInt(reqQuery.limit) || 10);
+  const limit = Math.max(1, parseInt(reqQuery.limit) || 8);
   const skip = (page - 1) * limit;
 
   // Execute database repository actions

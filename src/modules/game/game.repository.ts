@@ -1,7 +1,21 @@
+// src/modules/game/game.repository.ts
 import Game from './game.model';
 
 export const create = (data: any) => Game.create(data);
-export const findAll = (query: any) => Game.find(query);
+
+// Accept skip and limit arguments to build database boundaries
+export const findAll = (query: any, sortOptions: any = {}, skip: number = 0, limit: number = 10) => {
+  return Game.find(query)
+    .sort(sortOptions)
+    .skip(skip)
+    .limit(limit);
+};
+
+// Add a fast document scanner to compute the overall total matches matching the query
+export const countAll = (query: any) => {
+  return Game.countDocuments(query);
+};
+
 export const findById = (id: string) => Game.findById(id).populate('owner', 'name email');
 export const updateById = (id: string, data: any) => Game.updateOne({ _id: id }, { $set: data });
 export const deleteById = (id: string) => Game.deleteOne({ _id: id });

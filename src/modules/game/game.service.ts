@@ -4,21 +4,32 @@ export const createGame = (data: any) => {
   return gameRepo.create(data);
 };
 
-// src/modules/game/game.service.ts
 
 export const searchGames = async (reqQuery: any) => {
   const query: any = {};
   let sortOptions: any = {};
 
-  // 1. Text Search & Array Selection Operations
+  // 1. Multi-Field Text Search Scanning Engine ($or Operator)
   if (reqQuery.q) {
-    query.title = { $regex: reqQuery.q, $options: 'i' };
+    const searchRegex = { $regex: reqQuery.q, $options: 'i' };
+    
+    query.$or = [
+      { title: searchRegex },
+      { genre: searchRegex },    // MongoDB automatically checks all elements in the array
+      { platform: searchRegex } // MongoDB automatically checks all elements in the array
+    ];
   }
+
+  // 2. Strict Category Filtering (Dropdown Selections)
+  // Keeps separate strict dropdown filters active alongside the text query input
   if (reqQuery.genre) {
     query.genre = reqQuery.genre;
   }
+  if (reqQuery.platform) {
+    query.platform = reqQuery.platform;
+  }
 
-  // 2. Sorting Vector Evaluation
+  // 3. Sorting Vector Evaluation
   if (reqQuery.sortBy) {
     switch (reqQuery.sortBy) {
       case 'title': sortOptions.title = 1; break;
@@ -31,12 +42,12 @@ export const searchGames = async (reqQuery: any) => {
     sortOptions.createdAt = -1;
   }
 
-  // 3. Pagination Math Execution
+  // 4. Pagination Math Execution
   const page = Math.max(1, parseInt(reqQuery.page) || 1);
-  const limit = Math.max(1, parseInt(reqQuery.limit) || 8);
+  const limit = Math.max(1, parseInt(reqQuery.limit) || 10);
   const skip = (page - 1) * limit;
 
-  // Run database lookups simultaneously to save execution time
+  // Execute database repository actions
   const [games, totalItems] = await Promise.all([
     gameRepo.findAll(query, sortOptions, skip, limit),
     gameRepo.countAll(query)

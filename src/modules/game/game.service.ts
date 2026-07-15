@@ -80,3 +80,7 @@ export const updateGame = (id: string, data: any) => {
 export const deleteGame = (id: string) => {
   return gameRepo.deleteById(id);
 };
+
+export const incrementDownloadCount = (id: string) => {
+  return gameRepo.incrementDownloadCount(id);
+};

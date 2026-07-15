@@ -12,6 +12,7 @@ export interface IGame extends Document {
   platform: string[];
   status: string;
   price: number;
+  downloadCount: number;
   size: string;
   fileName: string;
   originalName: string;
@@ -31,6 +32,7 @@ const gameSchema = new Schema<IGame>({
   platform: [String],
   status: { type: String, default: 'Live' },
   price: { type: Number, default: 0 },
+  downloadCount: { type: Number, default: 0 },
   size: String,
   fileName: String,
   originalName: String,

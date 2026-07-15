@@ -44,6 +44,7 @@ export const download = async (req: Request, res: Response) => {
   const game = await gameService.getGameById(id as string);
   if (!game) return res.status(404).send({ message: 'Game not found' });
   await downloadHistoryService.recordDownload(req.user!.id, id as string);
+  await gameService.incrementDownloadCount(id as string);
   res.redirect(game.filePath);
 };
 

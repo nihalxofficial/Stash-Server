@@ -11,7 +11,6 @@ export const findAll = (query: any, sortOptions: any = {}, skip: number = 0, lim
     .limit(limit);
 };
 
-// Add a fast document scanner to compute the overall total matches matching the query
 export const countAll = (query: any) => {
   return Game.countDocuments(query);
 };
@@ -19,3 +18,6 @@ export const countAll = (query: any) => {
 export const findById = (id: string) => Game.findById(id).populate('owner', 'name email image');
 export const updateById = (id: string, data: any) => Game.updateOne({ _id: id }, { $set: data });
 export const deleteById = (id: string) => Game.deleteOne({ _id: id });
+
+export const incrementDownloadCount = (id: string) =>
+  Game.updateOne({ _id: id }, { $inc: { downloadCount: 1 } });

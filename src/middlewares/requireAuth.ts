@@ -1,4 +1,3 @@
-// src/middlewares/requireAuth.ts
 import { Request, Response, NextFunction } from 'express';
 
 const { createRemoteJWKSet, jwtVerify } = require('jose-cjs');
@@ -8,12 +7,11 @@ const JWKS = createRemoteJWKSet(
 );
 
 const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
-  const header = req.headers.authorization;
-  if (!header || !header.startsWith('Bearer ')) {
+  const token = req.headers.authorization?.split(' ')[1] || (req.query.token as string);
+
+  if (!token) {
     return res.status(401).json({ success: false, message: 'No token provided' });
   }
-
-  const token = header.split(' ')[1];
 
   try {
     const { payload } = await jwtVerify(token, JWKS, {

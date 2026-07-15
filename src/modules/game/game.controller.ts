@@ -2,6 +2,8 @@
 import { Request, Response } from 'express';
 import * as gameService from './game.service';
 import { uploadFile } from '../../config/storage';
+import * as downloadHistoryService from '../downloadHistory/downloadHistory.service';
+
 
 export const create = async (req: Request, res: Response) => {
   const file = req.file as Express.Multer.File;
@@ -41,6 +43,7 @@ export const download = async (req: Request, res: Response) => {
   const { id } = req.params;
   const game = await gameService.getGameById(id as string);
   if (!game) return res.status(404).send({ message: 'Game not found' });
+  await downloadHistoryService.recordDownload(req.user!.id, id as string);
   res.redirect(game.filePath);
 };
 

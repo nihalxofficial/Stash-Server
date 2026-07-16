@@ -12,24 +12,29 @@ export const searchGames = async (reqQuery: any) => {
   // 1. Multi-Field Text Search Scanning Engine ($or Operator)
   if (reqQuery.q) {
     const searchRegex = { $regex: reqQuery.q, $options: 'i' };
-    
+
     query.$or = [
       { title: searchRegex },
-      { genre: searchRegex },    
+      { genre: searchRegex },
       { platform: searchRegex }
     ];
   }
 
-  // 2. Strict Category Filtering (Dropdown Selections)
-  // Keeps separate strict dropdown filters active alongside the text query input
+  // 2. Strict / Array Dropdown Filtering Elements
   if (reqQuery.owner) {
     query.owner = reqQuery.owner;
   }
+
   if (reqQuery.genre) {
-    query.genre = reqQuery.genre;
+    // Matches if the genre array contains this specific string (case-insensitive)
+    query.genre = { $regex: new RegExp(`^${reqQuery.genre}$`, 'i') };
   }
+
+  // FIXED/UPDATED: Platform dropdown handling for schema array configurations
   if (reqQuery.platform) {
-    query.platform = reqQuery.platform;
+    // Using a clean anchors regex to find matching array strings case-insensitively 
+    // without suffering exact-match array order restrictions
+    query.platform = { $regex: new RegExp(`^${reqQuery.platform}$`, 'i') };
   }
 
   // 3. Sorting Vector Evaluation

@@ -5,6 +5,6 @@ import * as ctrl from './downloadHistory.controller';
 
 const router = Router();
 
-router.get('/me', ctrl.getMyHistory); 
+router.get('/',  ctrl.getMyHistory); 
 
 export default router;
